@@ -1,8 +1,15 @@
-#! /usr/bin/python3
-# Author: Tahmid Efaz, tahmidefaz@gmail.com
-# Date: 7-21-2017
+#!/usr/bin/python3
+"""
+Original author: Tahmid Efaz, tahmidefaz@gmail.com
+Date: 2017/07/21
+"""
+import json
+import requests
+import time
+import urllib.request
 
-import urllib.request, json, requests, tweepy, time
+import tweepy
+
 
 giphy_api_key="" #TODO: obtain this key from https://developers.giphy.com/
 
@@ -12,10 +19,11 @@ CONSUMER_SECRET=""
 ACCESS_KEY=""
 ACCESS_SECRET=""
 
+
 def modifier(s):
-    '''
+    """
     returns hashtags based on the GIF names from GIPHY
-    '''
+    """
     ms =''
     for i in range(len(s)):
         if(s[i]=='-'):
@@ -25,17 +33,20 @@ def modifier(s):
     ls = ms.split()
     del ls[-1]
     ls[0] = "#" + ls[0]
+    
     return (" #".join(ls))
 
+
 def gif_download(gif_url):
-    '''
+    """
     Takes the URL of an Image/GIF and downloads it
-    '''
+    """
     gif_data = requests.get(gif_url).content
     with open('image.gif', 'wb') as handler:
         handler.write(gif_data)
         handler.close()
 
+        
 def tweet(tweet_msg):
     message= tweet_msg + " #funny #gif #lol #humor" #TODO: Add desired tweet message here
     auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
@@ -57,25 +68,30 @@ def gif_post(gif_url_list, msg):
             continue
         time.sleep(900) #TODO: Change this number to modify how often each tweet gets posted
 
-while True:
 
-    giphy_url = "http://api.giphy.com/v1/gifs/trending?&api_key="+giphy_api_key+"&limit=30"
+def main():
+    while True:
+        giphy_url = "http://api.giphy.com/v1/gifs/trending?&api_key="+giphy_api_key+"&limit=30"
 
-    with urllib.request.urlopen(giphy_url) as response:
-       html = response.read()
+        with urllib.request.urlopen(giphy_url) as response:
+           html = response.read()
 
-    h=html.decode("utf-8")
-    gif_info = json.loads(h)
-    gif_data = gif_info["data"]
-    gif_urls = []
-    slugs = []
+        h=html.decode("utf-8")
+        gif_info = json.loads(h)
+        gif_data = gif_info["data"]
+        gif_urls = []
+        slugs = []
 
-    for i in range(len(gif_data)):
-        gif = gif_data[i]['images']["downsized"]["url"]
-        slug = gif_data[i]['slug']
-        gif_urls.append(gif)
-        slugs.append(slug)
+        for i in range(len(gif_data)):
+            gif = gif_data[i]['images']["downsized"]["url"]
+            slug = gif_data[i]['slug']
+            gif_urls.append(gif)
+            slugs.append(slug)
 
-    gif_post(gif_urls, slugs)
-    gif_urls = []
-    slugs = []
+        gif_post(gif_urls, slugs)
+        gif_urls = []
+        slugs = []
+        
+        
+if __name__ == '__main__':
+    main()
