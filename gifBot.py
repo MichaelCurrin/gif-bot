@@ -1,5 +1,7 @@
-#!/usr/bin/python3
+#!/usr/bin/env/python
 """
+GIF bot application.
+
 Original author: Tahmid Efaz, tahmidefaz@gmail.com
 Date: 2017/07/21
 """
@@ -11,18 +13,18 @@ import urllib.request
 import tweepy
 
 
-giphy_api_key="" #TODO: obtain this key from https://developers.giphy.com/
+GIPHY_API_KEY = "" # TODO: obtain this key from https://developers.giphy.com/
 
-#TODO: obtain the following keys from https://dev.twitter.com/
-CONSUMER_KEY=""
-CONSUMER_SECRET=""
-ACCESS_KEY=""
-ACCESS_SECRET=""
+# TODO: obtain the following keys from https://dev.twitter.com/
+CONSUMER_KEY = ""
+CONSUMER_SECRET = ""
+ACCESS_KEY = ""
+ACCESS_SECRET = ""
 
 
 def modifier(s):
     """
-    returns hashtags based on the GIF names from GIPHY
+    Return hashtags based on the GIF names from GIPHY.
     """
     ms =''
     for i in range(len(s)):
@@ -39,7 +41,7 @@ def modifier(s):
 
 def gif_download(gif_url):
     """
-    Takes the URL of an Image/GIF and downloads it
+    Take the URL of an Image/GIF and download it.
     """
     gif_data = requests.get(gif_url).content
     with open('image.gif', 'wb') as handler:
@@ -48,7 +50,7 @@ def gif_download(gif_url):
 
         
 def tweet(tweet_msg):
-    message= tweet_msg + " #funny #gif #lol #humor" #TODO: Add desired tweet message here
+    message= tweet_msg + " #funny #gif #lol #humor" # TODO: Add desired tweet message here
     auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
     auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
     api = tweepy.API(auth)
@@ -57,7 +59,7 @@ def tweet(tweet_msg):
 
 def gif_post(gif_url_list, msg):
     """
-    tweets GIFs and sleeps for a specific time
+    Tweet GIFs and sleep for a specific time.
     """
     for i in range(len(gif_url_list)):
         try:
@@ -71,12 +73,12 @@ def gif_post(gif_url_list, msg):
 
 def main():
     while True:
-        giphy_url = "http://api.giphy.com/v1/gifs/trending?&api_key="+giphy_api_key+"&limit=30"
+        giphy_url = "http://api.giphy.com/v1/gifs/trending?&api_key=" + GIPHY_API_KEY + "&limit=30"
 
         with urllib.request.urlopen(giphy_url) as response:
            html = response.read()
 
-        h=html.decode("utf-8")
+        h = html.decode("utf-8")
         gif_info = json.loads(h)
         gif_data = gif_info["data"]
         gif_urls = []
