@@ -28,10 +28,10 @@ def modifier(s):
     """
     ms =''
     for i in range(len(s)):
-        if(s[i]=='-'):
-            ms+=' '
+        if(s[i] == '-'):
+            ms += ' '
         else:
-            ms+=s[i]
+            ms += s[i]
     ls = ms.split()
     del ls[-1]
     ls[0] = "#" + ls[0]
@@ -44,16 +44,17 @@ def gif_download(gif_url):
     Take the URL of an Image/GIF and download it.
     """
     gif_data = requests.get(gif_url).content
+    
     with open('image.gif', 'wb') as handler:
         handler.write(gif_data)
-        handler.close()
 
         
 def tweet(tweet_msg):
-    message= tweet_msg + " #funny #gif #lol #humor" # TODO: Add desired tweet message here
     auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
     auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
     api = tweepy.API(auth)
+    
+    message = tweet_msg + " #funny #gif #lol #humor" # TODO: Add desired tweet message here
     api.update_with_media('image.gif',status=message)
 
 
