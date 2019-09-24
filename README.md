@@ -6,6 +6,8 @@ This project is a fork of [this](https://github.com/tahmidefaz/gif-bot) repo and
 
 ## Requirements
 
+- Twitter account
+- Twitter dev account with API credentials 
 - Python 3 virtual environment
 
 
